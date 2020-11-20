@@ -1,4 +1,5 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const outputPath = path.resolve(__dirname, "dist");
 
@@ -26,9 +27,29 @@ module.exports = {
           name: "./image/[name].[ext]",
         },
       },
+      {
+        test: /\.m?jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
+      },
+      {
+        test: /\.html$/,
+        loader: "html-loader",
+      },
     ],
   },
   devServer: {
     contentBase: outputPath,
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html",
+    }),
+  ],
 };
